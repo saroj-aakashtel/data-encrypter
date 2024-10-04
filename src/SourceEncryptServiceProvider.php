@@ -9,7 +9,7 @@
  * @link        https://github.com/SiavashBamshadnia/Laravel-Source-Encrypter
  */
 
-namespace sbamtr\LaravelSourceEncrypter;
+namespace Saroj\Helper;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -36,7 +36,7 @@ class SourceEncryptServiceProvider extends ServiceProvider
     public function boot()
     {
         // Publish config file
-        $configPath = __DIR__.'/../config/source-encrypter.php';
+        $configPath = __DIR__ . '/../config/source-encrypter.php';
         if (function_exists('config_path')) {
             $publishPath = config_path('source-encrypter.php');
         } else {
