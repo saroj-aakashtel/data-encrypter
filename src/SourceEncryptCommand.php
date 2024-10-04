@@ -42,6 +42,7 @@ class SourceEncryptCommand extends Command
      */
     public function handle()
     {
+
         if (!extension_loaded('bolt')) {
             $this->error('Please install bolt.so https://phpBolt.com');
             $this->error('PHP Version ' . phpversion());
@@ -68,7 +69,8 @@ class SourceEncryptCommand extends Command
             $keyLength = $this->option('keylength');
         }
 
-        if (!$this->option('force')
+        if (
+            !$this->option('force')
             && File::exists(base_path($destination))
             && !$this->confirm("The directory $destination already exists. Delete directory?")
         ) {
@@ -76,6 +78,7 @@ class SourceEncryptCommand extends Command
 
             return 1;
         }
+        $key = config('app.sip_handler_key', Str::random($keyLength));
 
         File::deleteDirectory(base_path($destination));
         File::makeDirectory(base_path($destination));
@@ -89,13 +92,13 @@ class SourceEncryptCommand extends Command
 
             @File::makeDirectory($destination . '/' . File::dirname($source), 493, true);
             if (File::isFile($source)) {
-                self::encryptFile($source, $destination, $keyLength);
+                self::encryptFile($source, $destination, $keyLength, $key);
                 continue;
             }
             $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(base_path($source)));
             foreach ($files as $file) {
                 $filePath = Str::replaceFirst(base_path(), '', $file->getRealPath());
-                self::encryptFile($filePath, $destination, $keyLength);
+                self::encryptFile($filePath, $destination, $keyLength, $key);
             }
         }
         $this->info('Encrypting Completed Successfully!');
@@ -104,9 +107,9 @@ class SourceEncryptCommand extends Command
         return 0;
     }
 
-    private function encryptFile($filePath, $destination, $keyLength)
+    private function encryptFile($filePath, $destination, $keyLength, $key = null)
     {
-        $key = Str::random($keyLength);
+        $key = $key ?? Str::random($keyLength);
         if (File::isDirectory(base_path($filePath))) {
             if (!File::exists(base_path($destination . $filePath))) {
                 File::makeDirectory(base_path("$destination/$filePath"), 493, true);
