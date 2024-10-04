@@ -9,8 +9,7 @@
  * @link        https://github.com/SiavashBamshadnia/Laravel-Source-Encrypter
  */
 
-namespace SarojAakashtel\Helper;
-
+namespace Saroj\Helper;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;

@@ -9,7 +9,7 @@
  * @link        https://github.com/SiavashBamshadnia/Laravel-Source-Encrypter
  */
 
-namespace SarojAakashtel\Helper;
+namespace Saroj\Helper;
 
 use Illuminate\Support\ServiceProvider;
 
